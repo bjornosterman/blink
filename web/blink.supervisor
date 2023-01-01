@@ -1,0 +1,5 @@
+[program:flask_app]                                                                  
+command = python blink.py                                      
+directory = /user/pi/blink/web/blink.py
+autostart = true                                                                
+autorestart = true
