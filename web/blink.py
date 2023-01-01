@@ -5,7 +5,6 @@ from serial import Serial
 web = Flask(__name__)
 
 lock = Lock()
-port = Serial('COM3')
 counter = 0
 
 
@@ -21,14 +20,17 @@ def api():
 
 def runSerial():
     global counter
-    Serial.baudrate = 9600
+    port = Serial('COM6')
+    print("Port" + str(port))
+    # port.baudrate = 9600
     # Do one readline() to make sure that we don't try to read half a line
-    Serial.readline()
+    port.readline()
 
     while True:
 
-        line = Serial.readline()
-        if (line[:2] == "//"):
+        line = port.readline()
+        print(b"Line: " + line)
+        if (line[:2] == b"//"):
             print(line)
         else:
             local_couner = int(line)
@@ -37,6 +39,6 @@ def runSerial():
             lock.release()
 
 thread = Thread(target=runSerial)
-thread.run()
+thread.start()
 
 web.run()
